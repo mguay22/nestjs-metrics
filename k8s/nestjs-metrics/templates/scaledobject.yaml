@@ -1,0 +1,19 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: nestjs-metrics
+  labels:
+    app: nestjs-metrics
+spec:
+  maxReplicaCount: 5
+  minReplicaCount: 1
+  pollingInterval: 15
+  scaleTargetRef:
+    name: nestjs-metrics
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://nestjs-metrics-prometheus-server:80
+        metricName: cpu_usage
+        query: sum(irate(process_cpu_seconds_total{app="nestjs-metrics"}[2m])) * 100
+        threshold: '50'

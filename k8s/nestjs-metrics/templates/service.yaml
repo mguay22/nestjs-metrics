@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nestjs-metrics
+    app.kubernetes.io/managed-by: Helm
+  name: nestjs-metrics
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: nestjs-metrics
+  type: NodePort
+status:
+  loadBalancer: {}
